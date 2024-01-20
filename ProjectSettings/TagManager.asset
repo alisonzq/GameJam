@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - vendor1
+  - vendor2
+  - vendor3
+  - vendor4
+  - vendor5
+  - vendor6
   layers:
   - Default
   - TransparentFX

@@ -13,15 +13,26 @@ using System.Threading.Tasks;
 public class TextToSpeech : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
-    private async void Start()
+
+    private async void Update()
     {
-        var credentials = new BasicAWSCredentials("AKIAZQ3DUQMNH3UPH3LK","d0pv12vsOSGD2t4Z9tzpZk0Ks4KmPVo4mYvw1Nrs");
+        if (OpenAI.validResponse)
+        {
+            await AWSAudio(OpenAI.text, "Joanna");
+            OpenAI.validResponse = false;
+        }
+    }
+
+    private async Task AWSAudio(string text, string voice)
+    {
+        var credentials = new BasicAWSCredentials("AKIAZQ3DUQMNGIZRRIBV", "8RNyaDh6hv+uTkYrKG4W2/8qieBJRBCOuU0g9vFl");
         var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
 
-        var request = new SynthesizeSpeechRequest(){
-            Text = "get get run over, over!",
+        var request = new SynthesizeSpeechRequest()
+        {
+            Text = text,
             Engine = Engine.Standard,
-            VoiceId = VoiceId.Joanna,
+            VoiceId = VoiceId.FindValue(voice),
             OutputFormat = OutputFormat.Mp3
         };
 

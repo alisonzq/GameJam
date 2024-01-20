@@ -26,12 +26,12 @@ public class OpenAI : MonoBehaviour
         public string error;
     }
 
-    string Base = "http://127.0.0.1:8000";
+    string Base = "https://jamtest-eb817c59cddf.herokuapp.com";
 
     public static bool validResponse = false;
     public static string text = "";
 
-    private void OnCollisionEnter()
+    public void Start()
     {
         string url = Base + "/";
 
@@ -86,11 +86,11 @@ public class OpenAI : MonoBehaviour
         string url = Base + "/receive_input/";
         RequestMicrophoneData data = new RequestMicrophoneData();
         data.text_message = prompt;
+        data.vendor = "vendor1";
 
         string jsonData = JsonUtility.ToJson(data);
         byte[] byteData = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
-        Debug.Log("sending request...");
         UnityWebRequest request = new UnityWebRequest(url, "POST");
         request.uploadHandler = new UploadHandlerRaw(byteData);
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -118,6 +118,7 @@ public class OpenAI : MonoBehaviour
                 ResponseVendor responseData = JsonUtility.FromJson<ResponseVendor>(response);
 
                 text = responseData.text_message;
+                Debug.Log(text);
                 validResponse = true;
             }
         }
